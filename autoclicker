@@ -1,0 +1,49 @@
+import pyautogui, os, config
+import tkinter as tk
+from pynput.keyboard import *
+
+delay = 0.06
+rp_key = Key.alt_l
+rpkey = Key.alt_l
+
+keyfeel = "p"
+
+pause = True
+running = True
+
+def on_press(key):
+    global running, pause, keyfeel
+
+    if key == rp_key and keyfeel == "p":
+        pause = False
+        os.system("cls")
+        print("Resume/Pause: Alt\n")
+        print("Playing")
+        keyfeel = "r"
+    elif key == rpkey and keyfeel == "r":
+        pause = True
+        os.system("cls")
+        print("Resume/Pause: Alt\n")
+        print("Paused")
+        keyfeel = "p"
+
+def display_controls():
+    os.system("cls")
+    print("Resume/Pause: Alt\n")
+    print("Paused")
+    print(keyfeel)
+
+
+def main():
+    lis = Listener(on_press=on_press)
+    lis.start()
+    display_controls()
+    while running:
+        if not pause:
+            pyautogui.click(pyautogui.position())
+            pyautogui.PAUSE = delay
+    lis.stop()
+
+
+if __name__ == "__main__":
+    main()
